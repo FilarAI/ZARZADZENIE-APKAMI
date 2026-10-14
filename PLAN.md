@@ -18,7 +18,8 @@
 - [x] Kafelki online → otwierają adres w przeglądarce (w Tauri: domyślna przeglądarka)
 - [x] Licznik kliknięć (aplikacja + data) → ekran Statystyk
 - [x] Opakować ekran w Tauri → kafelki desktopowe otwierają aplikacje
-- [ ] Test na Macu Kacpra: każdy kafelek otwiera to, co trzeba
+- [x] Test na Macu Kacpra: każdy kafelek otwiera to, co trzeba (14.10.2026)
+- [x] Ikona aplikacji (żółte F) + instalacja na pulpicie Kacpra
 - [ ] Instalacja na Macu taty + ikona w Docku, start przy włączeniu komputera (opcjonalnie)
 
 ## Poza zakresem
