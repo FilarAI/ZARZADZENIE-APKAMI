@@ -1,0 +1,9 @@
+{
+  "identifier": "default",
+  "description": "Okno główne: podstawowe funkcje i przeciąganie okna za pasek",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging"
+  ]
+}

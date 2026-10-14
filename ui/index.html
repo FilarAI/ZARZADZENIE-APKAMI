@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Biuro Filar</title>
+<style>
+  :root {
+    --bg: oklch(0.995 0.002 100);
+    --sidebar: linear-gradient(180deg, oklch(0.975 0.002 100 / 0.8), oklch(0.955 0.002 100 / 0.85)); /* jak pasek App Store, lekko prześwituje */
+    --sidebar-edge: 0 0 0 1px oklch(0.2 0.006 60 / 0.07), inset 0 0 0 1px oklch(1 0 0 / 0.6);
+    --brand: #f7c303;   /* żółty z logo biura */
+    --brand-ink: #1f1a17;
+    --text: oklch(0.2 0.006 60);
+    --text-2: oklch(0.52 0.008 60);
+    --separator: oklch(0.2 0.006 60 / 0.1);
+    --fill: oklch(0.2 0.006 60 / 0.05);
+    --hover: oklch(0.2 0.006 60 / 0.04);
+    --icon-bg: oklch(0.95 0.004 100);
+    --icon-edge: oklch(0.2 0.006 60 / 0.08);
+    --glow: oklch(0.86 0.17 92 / 0.22);
+    --glow-soft: oklch(0.86 0.17 92 / 0.07);
+    --accent: #007aff;
+    --accent: AccentColor; /* kolor akcentu z systemu; bez wsparcia zostaje #007aff */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: oklch(0.21 0.004 80);
+      --sidebar: linear-gradient(180deg, oklch(0.28 0.004 80 / 0.8), oklch(0.25 0.004 80 / 0.85));
+      --sidebar-edge: 0 0 0 1px oklch(0 0 0 / 0.4), inset 0 0 0 1px oklch(1 0 0 / 0.08);
+      --text: oklch(0.95 0.003 80);
+      --text-2: oklch(0.72 0.006 80);
+      --separator: oklch(0.95 0.003 80 / 0.1);
+      --fill: oklch(0.95 0.003 80 / 0.1);
+      --hover: oklch(0.95 0.003 80 / 0.06);
+      --icon-bg: oklch(0.32 0.005 80);
+      --icon-edge: oklch(0.95 0.003 80 / 0.1);
+      --glow: oklch(0.86 0.17 92 / 0.1);
+      --glow-soft: oklch(0.86 0.17 92 / 0.03);
+    }
+    .logo { filter: invert(1) hue-rotate(180deg); } /* czarne logo → jasne, żółty zostaje żółty */
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+
+  body {
+    background:
+      radial-gradient(1100px 620px at 0 0, var(--glow), var(--glow-soft) 45%, transparent 80%)
+      var(--bg) fixed;
+    color: var(--text);
+    font: 13px/1.35 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 228px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Pasek boczny */
+  /* Pływający panel jak w App Store: odsunięty od krawędzi okna, zaokrąglony, z cieniem */
+  .sidebar {
+    position: sticky;
+    top: 8px;
+    height: calc(100vh - 16px);
+    margin: 8px 0 8px 8px;
+    padding: 28px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+    background: var(--sidebar);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--sidebar-edge), 0 8px 28px oklch(0.2 0.006 60 / 0.08);
+  }
+  .logo {
+    display: block;
+    width: 112px;
+    margin: 0 0 28px 12px;
+  }
+  .nav { display: grid; gap: 2px; }
+
+  .profile {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .profile img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 34px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex: none; color: var(--text-2); }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item[aria-current] { background: var(--brand); color: var(--brand-ink); font-weight: 600; }
+  .nav-item[aria-current] svg { color: var(--brand-ink); }
+  .nav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Główna część */
+  main {
+    padding: 40px 40px 56px;
+  }
+  section { max-width: 860px; }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .apps {
+    list-style: none;
+    padding: 0;
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+
+  .apps li { display: flex; }
+  .app {
+    width: 100%;
+    height: 84px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+    gap: 14px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 14px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 150ms ease-out, transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .app:hover:not(:disabled) { background: var(--hover); }
+  .app:active:not(:disabled) { transform: scale(0.98); }
+  .app:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .app:disabled { cursor: default; }
+  a.app { text-decoration: none; }
+
+  .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 13.5px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .icon img { width: 100%; height: 100%; display: block; }
+  .icon.letter {
+    background: var(--icon-bg);
+    box-shadow: inset 0 0 0 1px var(--icon-edge);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+
+  .body {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+    border-bottom: 1px solid var(--separator);
+  }
+  .apps li:nth-last-child(-n+2) .body { border-bottom-color: transparent; }
+
+  .text { flex: 1; min-width: 0; }
+  .name, .desc { display: block; }
+  .name {
+    font-size: 15px;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .desc {
+    margin-top: 2px;
+    color: var(--text-2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pill {
+    flex: none;
+    min-width: 68px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: var(--fill);
+    color: var(--accent);
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+  }
+
+  .app:disabled .icon,
+  .app:disabled .text { opacity: 0.45; }
+  .app:disabled .pill { color: var(--text-2); }
+
+  .empty {
+    margin-top: 12px;
+    max-width: 46ch;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+
+  /* W aplikacji (Tauri) przyciski okna leżą na pasku bocznym, więc logo niżej */
+  .tauri .sidebar { padding-top: 60px; }
+
+  .app.error .desc { color: oklch(0.58 0.19 27); }
+
+  .summary { margin-top: 12px; font-size: 15px; color: var(--text-2); }
+  .stats { list-style: none; padding: 0; margin-top: 20px; max-width: 560px; }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator);
+  }
+  .stat:last-child { border-bottom: 0; }
+  .stat img { width: 36px; height: 36px; border-radius: 8px; }
+  .count { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 720px) {
+    .shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .sidebar { position: static; height: auto; margin: 8px 8px 0; display: flex; align-items: center; gap: 16px; padding: 12px 16px; }
+    .logo { width: 80px; margin: 0; }
+    .nav { grid-auto-flow: column; }
+    .profile { margin: 0 0 0 auto; padding: 0; }
+    .profile span { display: none; }
+    main { padding: 28px 16px 40px; }
+  }
+
+  /* Za wąsko na 2 kolumny: opisy zawijają się i wiersze się rozjeżdżają */
+  @media (max-width: 960px) {
+    .apps { grid-template-columns: 1fr; }
+    .apps li:nth-last-child(2) .body { border-bottom-color: var(--separator); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app, .nav-item { transition: none; }
+    .app:active:not(:disabled) { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar" data-tauri-drag-region>
+    <img class="logo" src="ikony/biuro.svg" alt="Biuro Filar">
+    <nav class="nav">
+      <button class="nav-item" type="button" data-view="aplikacje" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg>
+        Aplikacje
+      </button>
+      <button class="nav-item" type="button" data-view="statystyki">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 19v-5M12 19V6M18 19v-9"/></svg>
+        Statystyki
+      </button>
+    </nav>
+    <div class="profile">
+      <img src="ikony/bartek.jpg" alt="">
+      <span>Bartek Filar</span>
+    </div>
+  </aside>
+
+  <main data-tauri-drag-region>
+    <section id="aplikacje">
+      <h1>Aplikacje</h1>
+      <ul class="apps">
+        <li>
+          <a class="app" data-id="fakturomat" href="https://faktury-filar.web.app" target="_blank" rel="noopener">
+            <span class="icon"><img src="ikony/fakturomat.svg" alt=""></span>
+            <span class="body">
+              <span class="text">
+                <span class="name">Fakturomat</span>
+                <span class="desc">Faktura na papierze firmowym</span>
+              </span>
+              <span class="pill">Otwórz</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="app" data-id="finanse" href="https://finanse-biuro-filar.vercel.app" target="_blank" rel="noopener">
+            <span class="icon"><img src="ikony/finanse.png" alt=""></span>
+            <span class="body">
+              <span class="text">
+                <span class="name">Finanse</span>
+                <span class="desc">Finanse osobiste i firmowe</span>
+              </span>
+              <span class="pill">Otwórz</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="app" data-id="samochody" href="https://samochody-ten.vercel.app" target="_blank" rel="noopener">
+            <span class="icon"><img src="ikony/samochody.png" alt=""></span>
+            <span class="body">
+              <span class="text">
+                <span class="name">Samochody</span>
+                <span class="desc">Koszty utrzymania aut</span>
+              </span>
+              <span class="pill">Otwórz</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <button class="app" type="button" data-id="dokumenty">
+            <span class="icon"><img src="ikony/dokumenty.png" alt=""></span>
+            <span class="body">
+              <span class="text">
+                <span class="name">Uzupełnianie dokumentów</span>
+                <span class="desc">Wypełnia dokumenty z pliku</span>
+              </span>
+              <span class="pill">Otwórz</span>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button class="app" type="button" disabled>
+            <span class="icon letter" aria-hidden="true">C</span>
+            <span class="body">
+              <span class="text">
+                <span class="name">Czas pracy</span>
+                <span class="desc">Godziny pracy i rozliczenia</span>
+              </span>
+              <span class="pill">Wkrótce</span>
+            </span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section id="statystyki" hidden>
+      <h1>Statystyki</h1>
+      <p class="empty" id="stat-pusto">Tu zobaczysz, z których aplikacji biuro korzysta najczęściej i kiedy. Na razie nic nie zostało otwarte.</p>
+      <p class="summary" id="stat-suma" hidden></p>
+      <ul class="stats" id="stat-lista"></ul>
+    </section>
+  </main>
+</div>
+
+<script>
+  const invoke = window.__TAURI__?.core.invoke;
+  if (invoke) document.documentElement.classList.add('tauri');
+
+  // Licznik otwarć trzymany w pamięci okna (localStorage).
+  // ponytail: lista rośnie bez limitu (~40 B na kliknięcie, rok to kilkaset KB); przenieść do pliku, gdy zrobi się ciasno
+  const KLUCZ = 'otwarcia';
+  function wczytaj() {
+    try { return JSON.parse(localStorage.getItem(KLUCZ)) || []; } catch { return []; }
+  }
+  function zapisz(id) {
+    try { localStorage.setItem(KLUCZ, JSON.stringify([...wczytaj(), { id, t: Date.now() }])); } catch {}
+  }
+
+  function pokazBlad(app, tekst) {
+    const desc = app.querySelector('.desc');
+    desc.dataset.opis ??= desc.textContent;
+    desc.textContent = tekst;
+    app.classList.add('error');
+    clearTimeout(app.bladTimer);
+    app.bladTimer = setTimeout(() => {
+      desc.textContent = desc.dataset.opis;
+      app.classList.remove('error');
+    }, 4000);
+  }
+
+  for (const app of document.querySelectorAll('.app[data-id]')) {
+    app.addEventListener('click', async (e) => {
+      const href = app.getAttribute('href');
+      if (!invoke) {
+        // W zwykłej przeglądarce linki działają same; programu z dysku strona nie uruchomi
+        if (!href) return pokazBlad(app, 'Otwiera się tylko w aplikacji Biuro Filar');
+        return zapisz(app.dataset.id);
+      }
+      e.preventDefault(); // inaczej strona otworzyłaby się w oknie ekranu zamiast w przeglądarce
+      try {
+        await invoke('otworz', { cel: href || app.dataset.id });
+        zapisz(app.dataset.id);
+      } catch {
+        pokazBlad(app, 'Nie udało się otworzyć. Sprawdź, czy aplikacja jest zainstalowana.');
+      }
+    });
+  }
+
+  const dzien = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long' });
+  const dzienGodzina = new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+  const odmiana = { one: 'otwarcie', few: 'otwarcia', many: 'otwarć', other: 'otwarcia' };
+  const otwarc = (n) => `${n} ${odmiana[new Intl.PluralRules('pl').select(n)]}`;
+
+  function pokazStatystyki() {
+    const otwarcia = wczytaj();
+    const suma = document.getElementById('stat-suma');
+    document.getElementById('stat-pusto').hidden = otwarcia.length > 0;
+    suma.hidden = otwarcia.length === 0;
+    if (otwarcia.length) suma.textContent = `Łącznie ${otwarc(otwarcia.length)} od ${dzien.format(otwarcia[0].t)}`;
+
+    const wgAplikacji = new Map();
+    for (const { id, t } of otwarcia) {
+      const w = wgAplikacji.get(id) || { ile: 0, ostatnio: 0 };
+      w.ile++;
+      w.ostatnio = Math.max(w.ostatnio, t);
+      wgAplikacji.set(id, w);
+    }
+    const wiersze = [...wgAplikacji].sort((a, b) => b[1].ile - a[1].ile).map(([id, w]) => {
+      const app = document.querySelector(`.app[data-id="${id}"]`);
+      const li = document.createElement('li');
+      li.className = 'stat';
+      li.innerHTML = '<img alt=""><span class="text"><span class="name"></span><span class="desc"></span></span><span class="count"></span>';
+      li.querySelector('img').src = app?.querySelector('img')?.getAttribute('src') ?? '';
+      li.querySelector('.name').textContent = app?.querySelector('.name').textContent ?? id;
+      li.querySelector('.desc').textContent = `Ostatnio ${dzienGodzina.format(w.ostatnio)}`;
+      li.querySelector('.count').textContent = w.ile;
+      return li;
+    });
+    document.getElementById('stat-lista').replaceChildren(...wiersze);
+  }
+
+  const navItems = document.querySelectorAll('[data-view]');
+  for (const item of navItems) {
+    item.addEventListener('click', () => {
+      for (const other of navItems) {
+        const on = other === item;
+        if (on) other.setAttribute('aria-current', 'page');
+        else other.removeAttribute('aria-current');
+        document.getElementById(other.dataset.view).hidden = !on;
+      }
+      if (item.dataset.view === 'statystyki') pokazStatystyki();
+    });
+  }
+</script>
+</body>
+</html>

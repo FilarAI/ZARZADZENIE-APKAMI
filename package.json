@@ -1,0 +1,12 @@
+{
+  "name": "biuro-filar",
+  "private": true,
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "ikona": "tauri icon src-tauri/ikona.png"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}
