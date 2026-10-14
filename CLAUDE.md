@@ -67,5 +67,5 @@ Ikony: folder `ui/ikony/`, nazwy jak aplikacja, SVG lub PNG ≥512 px, kwadrat b
 ## Budowanie i instalacja
 
 - Podgląd w oknie: `npm run dev`. Gotowa aplikacja: `npm run build` → `src-tauri/target/release/bundle/macos/Biuro Filar.app`.
-- Ikona aplikacji: źródło `src-tauri/ikona.png` (znak F biura), wygenerowanie: `npm run ikona` (potem usunąć foldery android/ios i Square*).
+- Ikona aplikacji: źródło `src-tauri/ikona.png` — MUSI być pełnym kwadratem 1024 bez przezroczystości i bez własnych zaokrągleń (macOS 26 sam przycina do kształtu; ikona z przezroczystymi rogami ląduje w szarej ramce) (znak F biura), wygenerowanie: `npm run ikona` (potem usunąć foldery android/ios i Square*).
 - U taty: skopiować `Biuro Filar.app` do Aplikacji. Aplikacja nie jest podpisana — przy pierwszym uruchomieniu prawy klik → Otwórz (albo Ustawienia → Prywatność i ochrona → „Otwórz mimo to”).
