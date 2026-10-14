@@ -28,7 +28,7 @@ Plan i postęp: `PLAN.md`.
 | Czas pracy | Godziny pracy i rozliczenia | desktop, **w budowie** → kafelek wyszarzony „Wkrótce” | — |
 
 Kolejność kafelków: od najczęściej używanej (do potwierdzenia z tatą).
-Ikony: folder `ui/ikony/`, nazwy jak aplikacja, SVG lub PNG ≥512 px, kwadrat bez przezroczystego marginesu (inaczej przyciąć). Logo biura: `ui/ikony/biuro.svg` (w trybie ciemnym przefarbowane filtrem CSS). `fakturomat.svg` zrobiony przez Claude'a; Czas pracy na razie litera.
+Ikony: folder `ui/ikony/`, nazwy jak aplikacja, SVG lub PNG ≥512 px, kwadrat bez przezroczystego marginesu (inaczej przyciąć). Logo biura: `ui/ikony/biuro.svg`, w trybie ciemnym `biuro-ciemne.svg` (napis jasny, żółty bez zmian; filtr CSS psuł żółty). `fakturomat.svg` zrobiony przez Claude'a; Czas pracy na razie litera.
 
 ## Układ (wzór: App Store → sekcja „Great New Productivity Apps”)
 

@@ -39,7 +39,6 @@
       --glow: oklch(0.86 0.17 92 / 0.1);
       --glow-soft: oklch(0.86 0.17 92 / 0.03);
     }
-    .logo { filter: invert(1) hue-rotate(180deg); } /* czarne logo → jasne, żółty zostaje żółty */
   }
 
   * { box-sizing: border-box; margin: 0; }
@@ -272,7 +271,10 @@
 <body>
 <div class="shell">
   <aside class="sidebar" data-tauri-drag-region>
-    <img class="logo" src="ikony/biuro.svg" alt="Biuro Filar">
+    <picture>
+      <source srcset="ikony/biuro-ciemne.svg" media="(prefers-color-scheme: dark)">
+      <img class="logo" src="ikony/biuro.svg" alt="Biuro Filar">
+    </picture>
     <nav class="nav">
       <button class="nav-item" type="button" data-view="aplikacje" aria-current="page">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg>
