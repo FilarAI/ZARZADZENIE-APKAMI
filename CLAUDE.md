@@ -13,7 +13,7 @@ Plan i postęp: `PLAN.md`.
 - Aplikacja Tauri 2 (macOS). Wygląd i logika: `ui/index.html` (jeden plik, bez frameworka). Rust: tylko komenda `otworz` w `src-tauri/src/main.rs`.
 - `otworz(cel)`: adres `https://…` → domyślna przeglądarka taty (`open`); id aplikacji lokalnej → `open ~/…` wg listy `LOKALNE` w `main.rs`. Inne cele odrzucane.
 - Statystyki: każde udane otwarcie zapisywane w `localStorage` okna (`otwarcia`: id + czas). Liczymy tylko kliknięcia z tego ekranu, nie czas w aplikacjach.
-- Strona działa też w zwykłej przeglądarce jako aplikacja webowa (PWA na Vercelu) — patrz „Wersja webowa”. Linki online działają; aplikacji lokalnych strona nie uruchomi (na Macu kafelek podpowiada ikonę z pulpitu, na telefonie/tablecie/Windowsie jest ukryty).
+- Strona działa też w zwykłej przeglądarce jako aplikacja webowa (PWA na Vercelu) — patrz „Wersja webowa”. Linki online działają; program dokumentów na Macu startuje przez adres `dokumentyfilar://` (rejestruje go ikona z `instaluj_mac.sh` tamtego projektu; Safari raz pyta o zgodę), na telefonie/tablecie/Windowsie kafelek jest ukryty.
 - Programu dokumentów NIE wbudowujemy w ekran (Python, osobny projekt, osobne aktualizacje) — ekran tylko uruchamia jego ikonę z pulpitu.
 - Nie dokładać funkcji spoza tej listy (wyszukiwarka, statusy, ustawienia, konta itp.).
 

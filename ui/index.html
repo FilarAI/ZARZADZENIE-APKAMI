@@ -388,8 +388,8 @@
   if (invoke) document.documentElement.classList.add('tauri');
   else if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
-  // Strona w przeglądarce nie uruchomi programu z dysku. Na Macu kafelek zostaje
-  // (z podpowiedzią przy kliknięciu), na telefonie, tablecie i Windowsie znika.
+  // W przeglądarce program z dysku startuje przez adres dokumentyfilar:// (rejestruje go
+  // ikona „Dokumenty FILAR” z instalatora tamtego programu). Na telefonie, tablecie i Windowsie kafelek znika.
   const naMacu = /Mac/.test(navigator.platform) && navigator.maxTouchPoints === 0;
   if (!invoke && !naMacu) {
     for (const app of document.querySelectorAll('button.app[data-id]')) app.closest('li').remove();
@@ -421,8 +421,8 @@
     app.addEventListener('click', async (e) => {
       const href = app.getAttribute('href');
       if (!invoke) {
-        // W zwykłej przeglądarce linki działają same; programu z dysku strona nie uruchomi
-        if (!href) return pokazBlad(app, 'Otwórz ikonę „Dokumenty FILAR” na pulpicie');
+        // W zwykłej przeglądarce linki działają same; program z dysku przez swój adres
+        if (!href) location.href = 'dokumentyfilar://';
         return zapisz(app.dataset.id);
       }
       e.preventDefault(); // inaczej strona otworzyłaby się w oknie ekranu zamiast w przeglądarce
