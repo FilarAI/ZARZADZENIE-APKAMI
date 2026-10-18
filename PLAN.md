@@ -22,5 +22,9 @@
 - [x] Ikona aplikacji (żółte F) + instalacja na pulpicie Kacpra
 - [ ] Instalacja na Macu taty + ikona w Docku, start przy włączeniu komputera (opcjonalnie)
 
+## 4. Wersja webowa
+- [x] PWA na Vercelu: manifest, ikony, układ na telefon
+- [ ] Wdrożenie na Vercelu + dodanie do Docka / ekranu początkowego na Macu, iPhonie, tablecie
+
 ## Poza zakresem
 Logowanie, wyszukiwarka, statusy aplikacji, ustawienia, wiele kont.
