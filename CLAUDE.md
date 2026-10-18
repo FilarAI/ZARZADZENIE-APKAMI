@@ -13,7 +13,7 @@ Plan i postęp: `PLAN.md`.
 - Aplikacja Tauri 2 (macOS). Wygląd i logika: `ui/index.html` (jeden plik, bez frameworka). Rust: tylko komenda `otworz` w `src-tauri/src/main.rs`.
 - `otworz(cel)`: adres `https://…` → domyślna przeglądarka taty (`open`); id aplikacji lokalnej → `open ~/…` wg listy `LOKALNE` w `main.rs`. Inne cele odrzucane.
 - Statystyki: każde udane otwarcie zapisywane w `localStorage` okna (`otwarcia`: id + czas). Liczymy tylko kliknięcia z tego ekranu, nie czas w aplikacjach.
-- Strona działa też w zwykłej przeglądarce (linki online tak, aplikacje lokalne nie) — wygodne do podglądu wyglądu.
+- Strona działa też w zwykłej przeglądarce jako aplikacja webowa (PWA na Vercelu) — patrz „Wersja webowa”. Linki online działają; aplikacji lokalnych strona nie uruchomi (na Macu kafelek podpowiada ikonę z pulpitu, na telefonie/tablecie/Windowsie jest ukryty).
 - Programu dokumentów NIE wbudowujemy w ekran (Python, osobny projekt, osobne aktualizacje) — ekran tylko uruchamia jego ikonę z pulpitu.
 - Nie dokładać funkcji spoza tej listy (wyszukiwarka, statusy, ustawienia, konta itp.).
 
@@ -69,3 +69,10 @@ Ikony: folder `ui/ikony/`, nazwy jak aplikacja, SVG lub PNG ≥512 px, kwadrat b
 - Podgląd w oknie: `npm run dev`. Gotowa aplikacja: `npm run build` → `src-tauri/target/release/bundle/macos/Biuro Filar.app`.
 - Ikona aplikacji: źródło `src-tauri/ikona.png` — MUSI być pełnym kwadratem 1024 bez przezroczystości i bez własnych zaokrągleń (macOS 26 sam przycina do kształtu; ikona z przezroczystymi rogami ląduje w szarej ramce) (znak F biura), wygenerowanie: `npm run ikona` (potem usunąć foldery android/ios i Square*).
 - U taty: skopiować `Biuro Filar.app` do Aplikacji. Aplikacja nie jest podpisana — przy pierwszym uruchomieniu prawy klik → Otwórz (albo Ustawienia → Prywatność i ochrona → „Otwórz mimo to”).
+
+## Wersja webowa (Vercel, bez instalowania narzędzi)
+
+- Vercel: import repo z GitHuba, nic nie ustawiać — `vercel.json` podaje folder `ui` i pomija budowanie (bez tego Vercel odpaliłby `tauri build`).
+- Pliki PWA w `ui/`: `manifest.webmanifest`, `sw.js` (najpierw sieć, z pamięci tylko offline), ikony `ikona-192/512.png`, `apple-touch-icon.png`, `favicon-32.png` — wygenerowane z `src-tauri/ikona.png`.
+- Dodanie: Mac (Safari) → Plik → Dodaj do Docka; iPhone/iPad (Safari) → Udostępnij → Do ekranu początkowego; Windows/Android (Chrome/Edge) → ikona instalacji w pasku adresu / menu → Zainstaluj.
+- Statystyki liczą się osobno na każdym urządzeniu (localStorage).
