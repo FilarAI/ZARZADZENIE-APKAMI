@@ -72,7 +72,7 @@ Ikony: folder `ui/ikony/`, nazwy jak aplikacja, SVG lub PNG ≥512 px, kwadrat b
 
 ## Wersja webowa (Vercel, bez instalowania narzędzi)
 
-- Vercel: import repo z GitHuba, nic nie ustawiać — `vercel.json` podaje folder `ui` i pomija budowanie (bez tego Vercel odpaliłby `tauri build`).
+- Vercel: import repo z GitHuba, nic nie ustawiać — `vercel.json` podaje folder `ui` i pomija budowanie, `.vercelignore` chowa `src-tauri` i `package.json` (bez tego Vercel buduje Rust/Tauri i pada na brakujących bibliotekach Linuksa).
 - Pliki PWA w `ui/`: `manifest.webmanifest`, `sw.js` (najpierw sieć, z pamięci tylko offline), ikony `ikona-192/512.png`, `apple-touch-icon.png`, `favicon-32.png` — wygenerowane z `src-tauri/ikona.png`.
 - Dodanie: Mac (Safari) → Plik → Dodaj do Docka; iPhone/iPad (Safari) → Udostępnij → Do ekranu początkowego; Windows/Android (Chrome/Edge) → ikona instalacji w pasku adresu / menu → Zainstaluj.
 - Statystyki liczą się osobno na każdym urządzeniu (localStorage).

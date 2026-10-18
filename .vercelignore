@@ -1,0 +1,4 @@
+# Vercel serwuje tylko ui/. Bez tego wykrywa Rust (src-tauri) i próbuje budować wersję na Maca.
+src-tauri
+package.json
+package-lock.json
